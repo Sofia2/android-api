@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+   <parent>
+		<groupId>com.indra</groupId>
+		<artifactId>sofia2</artifactId>
+		<version>2.17.0-SNAPSHOT</version>
+	</parent>
+    <groupId>com.indra.sofia2</groupId>
+    <artifactId>ssap-android</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+    <name>ssap-android</name>
+    
+    <repositories>
+		<repository>   
+	   		<id>SOFIA2</id>
+	    	<url>http://sofia2.org/nexus/content/groups/public/</url>
+		</repository>
+	</repositories>
+    
+    <dependencies>
+    	<!-- JSONDOC -->
+    	<dependency>
+			<groupId>org.jsondoc</groupId>
+			<artifactId>jsondoc-core</artifactId>
+			<version>1.0.2</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>servlet-api</artifactId>
+					<groupId>javax.servlet</groupId>
+				</exclusion>
+			</exclusions>
+        </dependency>
+		 <!-- MQTT -->   
+        <dependency>
+            <groupId>org.fusesource.mqtt-client</groupId>
+            <artifactId>mqtt-client</artifactId>
+            <version>1.5</version>
+        </dependency>   
+        <dependency>
+            <groupId>org.fusesource.hawtdb</groupId>
+            <artifactId>hawtdb</artifactId>
+            <version>1.6</version>
+        </dependency>      
+        <dependency>
+            <groupId>org.fusesource.hawtbuf</groupId>
+            <artifactId>hawtbuf</artifactId>
+            <version>1.9</version>
+        </dependency>
+		<dependency>
+			<groupId>com.google.android</groupId>
+			<artifactId>android</artifactId>
+			<version>4.1.1.4</version>
+		</dependency>
+    </dependencies>
+</project>
