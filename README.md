@@ -23,6 +23,26 @@ cd <root of your copy of the repository>
 mvn clean install [-Dmaven.test.skip]
 ```
 
+## Android Studio dependencies
+
+Upon build, place the resulting .jar under the libs directory of your Android project. Then you need to update your build.gradle file inside the app directory with these lines:
+```
+  repositories {
+      mavenCentral()
+  }
+  dependencies {
+      compile 'org.apache.commons:commons-lang3:3.5'
+      compile 'org.fusesource.hawtbuf:hawtbuf:1.11'
+      compile 'org.fusesource.hawtdispatch:hawtdispatch:1.22'
+      compile 'org.fusesource.hawtdispatch:hawtdispatch-transport:1.22'
+      compile 'org.fusesource.mqtt-client:mqtt-client:1.14'
+      compile 'com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.8.6'
+      compile 'com.fasterxml.jackson.core:jackson-core:2.8.6'
+      compile 'com.fasterxml.jackson.core:jackson-databind:2.8.6'
+      compile 'com.fasterxml.jackson.core:jackson-annotations:2.8.6'
+      compile files('libs/ssap-android-1.1.0.jar')
+  }
+```
 ## Contact information
 
 If you need support from us, please feel free to contact us at [plataformasofia2@indra.es](mailto:plataformasofia2@indra.es) or at www.sofia2.com.
