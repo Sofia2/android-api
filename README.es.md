@@ -26,6 +26,26 @@ mvn clean package [-Dmaven.test.skip]
 mvn install:install-file -DpomFile=pom.xml -Dfile=target/ssap-standalone-<API version>.jar
 ```
 
+## Dependencias de Android Studio
+
+Tras la generación, hay que colocar el fichero .jar resultante en el directorio libs del proyecto de Android. Además hay que actualizar el fichero build.gradle de la app con las siguientes líneas :
+```
+  repositories {
+      mavenCentral()
+  }
+  dependencies {
+      compile 'org.apache.commons:commons-lang3:3.5'
+      compile 'org.fusesource.hawtbuf:hawtbuf:1.11'
+      compile 'org.fusesource.hawtdispatch:hawtdispatch:1.22'
+      compile 'org.fusesource.hawtdispatch:hawtdispatch-transport:1.22'
+      compile 'org.fusesource.mqtt-client:mqtt-client:1.14'
+      compile 'com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.8.6'
+      compile 'com.fasterxml.jackson.core:jackson-core:2.8.6'
+      compile 'com.fasterxml.jackson.core:jackson-databind:2.8.6'
+      compile 'com.fasterxml.jackson.core:jackson-annotations:2.8.6'
+      compile files('libs/ssap-android-1.1.0.jar')
+  }
+```
 ## Información de contacto
 
 Si necesita recibir soporte, puede contactar con nosotros en www.sofia2.com o enviando un correo electrónico a [plataformasofia2@indra.es](mailto:plataformasofia2@indra.es).
