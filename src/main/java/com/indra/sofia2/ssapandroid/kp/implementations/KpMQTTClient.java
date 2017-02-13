@@ -49,6 +49,7 @@ import com.indra.sofia2.ssapandroid.kp.implementations.mqtt.exceptions.MQTTClien
 import com.indra.sofia2.ssapandroid.kp.implementations.utils.IndicationTask;
 import com.indra.sofia2.ssapandroid.ssap.SSAPMessage;
 import com.indra.sofia2.ssapandroid.ssap.SSAPMessageTypes;
+import com.indra.sofia2.ssapandroid.ssap.body.SSAPBodyEmptyMessage;
 import com.indra.sofia2.ssapandroid.ssap.body.SSAPBodyJoinUserAndPasswordMessage;
 import com.indra.sofia2.ssapandroid.ssap.body.SSAPBodyReturnMessage;
 
@@ -346,13 +347,8 @@ public class KpMQTTClient extends KpToExtend {
 			      lock.unlock();
 			}
 		
-			 SSAPMessage responseSsap = SSAPMessage.fromJsonTo(callback.get());
+			 SSAPMessage responseSsap = SSAPMessage.fromJsonToSSAPMessage(callback.get());
 			 
-			//If it is a JOIN message and it is ok, unsubscribes from BaseCommandRequest ontology and from StatusControlRequest ontology
-			 if(responseSsap.getMessageType() == SSAPMessageTypes.JOIN &&
-					 SSAPBodyReturnMessage.fromJsonTo(responseSsap.getBody()).isOk()){
-				 SSAPBodyJoinUserAndPasswordMessage.fromJsonTo(msg.getBody()).getInstance();
-			 }
 			 return responseSsap;		 
 			
 		} catch (Exception e) {
@@ -382,7 +378,7 @@ public class KpMQTTClient extends KpToExtend {
 
 				if (msg.getMessageType() == SSAPMessageTypes.JOIN) {
 					SSAPBodyJoinUserAndPasswordMessage body = SSAPBodyJoinUserAndPasswordMessage
-							.fromJsonTo(msg
+							.fromJsonToSSAPBodyJoinUserAndPasswordMessage(msg
 									.getBody());
 
 					String kpName = body.getInstance().split(":")[0];
@@ -407,12 +403,12 @@ public class KpMQTTClient extends KpToExtend {
 			}
 
 			SSAPMessage responseSsap = SSAPMessage
-			 		.fromJsonTo(callback.get());
+			 		.fromJsonToSSAPMessage(callback.get());
 			 
 			//If it is a JOIN message and it is ok, unsubscribes from BaseCommandRequest ontology and from StatusControlRequest ontology
 			 if(responseSsap.getMessageType() == SSAPMessageTypes.JOIN &&
-					 SSAPBodyReturnMessage.fromJsonTo(responseSsap.getBody()).isOk()){
-				 SSAPBodyJoinUserAndPasswordMessage.fromJsonTo(msg.getBody()).getInstance();
+					 SSAPBodyReturnMessage.fromJsonToSSAPBodyReturnMessage(responseSsap.getBody()).isOk()){
+				 SSAPBodyJoinUserAndPasswordMessage.fromJsonToSSAPBodyJoinUserAndPasswordMessage(msg.getBody()).getInstance();
 			 }
 			return responseSsap;
 
@@ -475,18 +471,22 @@ public class KpMQTTClient extends KpToExtend {
 							
 							payload= clearJsonMessage(payload);
 							
-							SSAPMessage ssapMessage = SSAPMessage.fromJsonTo(payload);
+							SSAPMessage ssapMessage = SSAPMessage.fromJsonToSSAPMessage(payload);
 							//Si el mensaje es un JOIN recupera el SessionKey
 							try{
 								if (ssapMessage.getMessageType().equals(SSAPMessageTypes.JOIN)) {
-									String sKey = SSAPBodyReturnMessage.fromJsonTo(ssapMessage.getBody()).getData();
+									//String sKey = SSAPBodyReturnMessage.fromJsonToSSAPBodyReturnMessage(ssapMessage.getBody()).getData();
+									String sKey = ssapMessage.getSessionKey();
 									sessionKey = sKey;
-									if( SSAPBodyReturnMessage.fromJsonTo(ssapMessage.getBody()).isOk()&&
+									/*if( SSAPBodyReturnMessage.fromJsonToSSAPBodyReturnMessage(ssapMessage.getBody()).isOk()&&
 											sKey!=null) {
 										joined=true;
+									}*/
+									if(sKey!=null){
+										joined = true;
 									}
-								}else if (ssapMessage.getMessageType().equals(SSAPMessageTypes.LEAVE) &&
-										SSAPBodyReturnMessage.fromJsonTo(ssapMessage.getBody()).isOk()){
+								} else if (ssapMessage.getMessageType().equals(SSAPMessageTypes.LEAVE) &&
+										SSAPBodyReturnMessage.fromJsonToSSAPBodyReturnMessage(ssapMessage.getBody()).isOk()){
 									
 									joined=false;
 								}	
@@ -503,7 +503,7 @@ public class KpMQTTClient extends KpToExtend {
 							payload= clearJsonMessage(payload);
 							Collection<IndicationTask> tasks = new ArrayList<IndicationTask>();
 							
-							SSAPMessage ssapMessage = SSAPMessage.fromJsonTo(payload);
+							SSAPMessage ssapMessage = SSAPMessage.fromJsonToSSAPMessage(payload);
 							if(ssapMessage.getMessageType() == SSAPMessageTypes.INDICATION){
 								
 								String messageId=ssapMessage.getMessageId();

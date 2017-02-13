@@ -16,7 +16,11 @@
 
 package com.indra.sofia2.ssapandroid.ssap.body;
 
-import flexjson.JSONSerializer;
+import java.io.IOException;
+
+import com.indra.sofia2.ssapandroid.json.JSON;
+import com.indra.sofia2.ssapandroid.ssap.exceptions.SSAPMessageDeserializationError;
+
 
 
 /**
@@ -27,9 +31,11 @@ import flexjson.JSONSerializer;
 
 public class SSAPBodyLeaveMessage extends SSAPBodyJoinMessage {
 	
-	
-	
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+	public static SSAPBodyLeaveMessage fromJsonToSSAPBodyLeaveMessage(String json) {
+		try {
+			return JSON.deserialize(json, SSAPBodyLeaveMessage.class);
+		} catch (IOException e) {
+			throw new SSAPMessageDeserializationError(e);
+		}
 	}
 }

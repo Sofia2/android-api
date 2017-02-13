@@ -16,7 +16,26 @@
 
 package com.indra.sofia2.ssapandroid.ssap;
 
-public class SSAPMessage {
+import java.io.IOException;
+import java.io.Serializable;
+
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.indra.sofia2.ssapandroid.json.JSON;
+import com.indra.sofia2.ssapandroid.json.SSAPMessageDeserializer;
+import com.indra.sofia2.ssapandroid.ssap.body.SSAPBodyEmptyMessage;
+import com.indra.sofia2.ssapandroid.ssap.body.SSAPBodyMessage;
+import com.indra.sofia2.ssapandroid.ssap.body.binary.SSAPBinaryMessage;
+import com.indra.sofia2.ssapandroid.ssap.exceptions.SSAPMessageDeserializationError;
+
+
+@JsonDeserialize(using = SSAPMessageDeserializer.class)
+@JsonPropertyOrder({"body"})
+public class SSAPMessage<T extends SSAPBodyMessage> implements Serializable{
 
 	/**
 	 * 
@@ -26,33 +45,44 @@ public class SSAPMessage {
 	/*
 	 * Identificador unico de una peticion
 	 */
-	private String messageId;
+	protected String messageId;
 	
 	/*
 	 * Identificador de la session con un SIB
 	 */
-	private String sessionKey;
+	protected String sessionKey;
 	
 	/*
 	 * Identificador de la ontologia que referencia el mensaje
 	 */
-	private String ontology;
+	protected String ontology;
 
 	/*
 	 * Direccion de sentido del mensaje
 	 */
-	private SSAPMessageDirection direction;
+	protected SSAPMessageDirection direction;
 	
 	/*
 	 * Tipo de mensaje
 	 */
-	private SSAPMessageTypes messageType;
+	protected SSAPMessageTypes messageType;
+
 	/*
 	 * Cuerpo del Mensaje
 	 */
-	private String body;
+	protected T body = (T) new SSAPBodyEmptyMessage();
+
 	
+	protected SSAPVersion version;
 	
+	public SSAPVersion getVersion() {
+		return version;
+	}
+	
+	public void setVersion(SSAPVersion version){
+		this.version = version;
+		body.setVersion(version);
+	}
 	
 	public String getMessageId() { 
 		return messageId;
@@ -87,8 +117,7 @@ public class SSAPMessage {
 	public void setOntology(String ontology) {
 		this.ontology = ontology;
 	}
-
-
+	
 
 	public SSAPMessageDirection getDirection() {
 		return direction;
@@ -115,16 +144,47 @@ public class SSAPMessage {
 
 
 	public String getBody() {
-		return body;
+		body.getData();
+		return body.toJson();
+	}
+	
+	public String getBodyLegacy(){
+		return body.toJsonVersion();
 	}
 
 
 
 	public void setBody(String body) {
-		this.body = body;
+		try{
+			this.body = (T) JSON.deserialize(body, SSAPBodyMessage.class);
+			this.body.setVersion(version);
+		} catch (IOException e){
+			e.printStackTrace();
+		}
+
 	}
 
 
+	public T getBodyAsObject(){
+		return body;
+	}
+	
+	public void setBodyAsObject(T bodyObject){
+		this.body = bodyObject;
+		this.body.setVersion(version);
+	}
+	
+	public JsonNode getBodyAsJsonObject(){
+		try {
+			return JSON.deserializeToJson(this.body.toJson(),false);
+		} catch (IOException e){
+			throw new SSAPMessageDeserializationError(e);
+		}
+	}
+	
+	public String getBodyAsJsonString(){
+		return JSON.jsonizeString(body.toJson());
+	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
@@ -132,20 +192,40 @@ public class SSAPMessage {
 
 
 
-	public static SSAPMessage fromJsonTo(String string) {
-		return jsonDeserializer.deserialize( string );
+	public static SSAPMessage fromJsonToSSAPMessage(String json) {
+		try {
+			return JSON.deserialize(json,SSAPMessage.class);
+		} catch (IOException e){
+			throw new SSAPMessageDeserializationError(e);
+		}
 	}
 	
-	public static final flexjson.JSONSerializer jsonSerializer;
+/*	public static final flexjson.JSONSerializer jsonSerializer;
 	public static final flexjson.JSONDeserializer<SSAPMessage> jsonDeserializer;
 	static {
 	    jsonSerializer = new flexjson.JSONSerializer().exclude("*.class");
 	    jsonDeserializer = new flexjson.JSONDeserializer<SSAPMessage>().use( null, SSAPMessage.class );
-	}
+	}*/
 
 	public String toJSON() {
-	    return jsonSerializer.serialize(this);
+		try{
+			return JSON.serialize(this);
+		} catch (IOException e){
+			throw new RuntimeException(e);
+		}
+	}
+	
+	
+	public final String toJsonResponse(){
+		try {
+			return JSON.serialize(this, version);
+		} catch (IOException e){
+			throw new RuntimeException(e);
+		}
 	}
 
-	
+
+	public String toString(){
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
 }

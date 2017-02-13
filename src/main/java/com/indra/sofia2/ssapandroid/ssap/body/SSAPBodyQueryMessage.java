@@ -16,9 +16,13 @@
 
 package com.indra.sofia2.ssapandroid.ssap.body;
 
+import java.io.IOException;
+import java.util.Collection;
+
+import com.indra.sofia2.ssapandroid.json.JSON;
+import com.indra.sofia2.ssapandroid.ssap.exceptions.SSAPMessageDeserializationError;
 import com.indra.sofia2.ssapandroid.ssap.SSAPQueryType;
 
-import flexjson.JSONSerializer;
 
 public class SSAPBodyQueryMessage extends SSAPBodyMessage {
 
@@ -50,7 +54,29 @@ public class SSAPBodyQueryMessage extends SSAPBodyMessage {
 		return queryType;
 	}
 
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+	public static String toJsonArray(Collection<SSAPBodyQueryMessage> collection) {
+		try {
+			return JSON.serializeCollection(collection);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static SSAPBodyQueryMessage fromJsonToSSAPBodyQueryMessage(String json) {
+		try {
+			json = json.replaceAll(SSAPBodyOperationMessage.class.getSimpleName(), SSAPBodyQueryMessage.class.getSimpleName());
+			return JSON.deserialize(json, SSAPBodyQueryMessage.class);
+		} catch (IOException e) {
+			throw new SSAPMessageDeserializationError(e);
+		}
+	}
+
+	public static Collection<SSAPBodyQueryMessage> fromJsonArrayToSSAPBodyQueryMessages(String json) {
+		try {
+			json = json.replaceAll(SSAPBodyOperationMessage.class.getSimpleName(), SSAPBodyQueryMessage.class.getSimpleName());
+			return JSON.deserializeCollection(json, SSAPBodyQueryMessage.class);
+		} catch (IOException e) {
+			throw new SSAPMessageDeserializationError(e);
+		}
 	}
 }

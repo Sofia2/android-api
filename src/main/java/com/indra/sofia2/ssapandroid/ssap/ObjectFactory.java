@@ -18,6 +18,12 @@ package com.indra.sofia2.ssapandroid.ssap;
 
 import javax.xml.namespace.QName;
 
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.annotation.XmlElementDecl;
+import javax.xml.bind.annotation.XmlRegistry;
+import javax.xml.namespace.QName;
+
+
 
 /**
  * This object contains factory methods for each 
@@ -53,11 +59,15 @@ public class ObjectFactory {
         return new SSAPMessage();
     }
 
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link Ssapmessage }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "gatewayHttp", name = "ssapmessage")
+    public JAXBElement<SSAPMessage> createSsapmessage(SSAPMessage value) {
+        return new JAXBElement<SSAPMessage>(SSAP_MESSAGE_QNAME, SSAPMessage.class, null, value);
+    }
     
-    
-	public static QName getSsapMessageQname() {
-		return SSAP_MESSAGE_QNAME;
-	}
 
 
 }

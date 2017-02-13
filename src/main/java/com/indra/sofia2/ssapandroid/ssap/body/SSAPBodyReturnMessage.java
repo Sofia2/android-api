@@ -16,19 +16,33 @@
 
 package com.indra.sofia2.ssapandroid.ssap.body;
 
+import java.io.IOException;
+
+import com.indra.sofia2.ssapandroid.json.JSON;
+import com.indra.sofia2.ssapandroid.ssap.exceptions.SSAPMessageDeserializationError;
 import com.indra.sofia2.ssapandroid.ssap.SSAPErrorCode;
 
-import flexjson.JSONDeserializer;
-import flexjson.JSONSerializer;
 
+public class SSAPBodyReturnMessage extends SSAPBodyMessage{
 
-public class SSAPBodyReturnMessage {
-
+	
 	/*
 	 * Datos que intervienen en la operaci�n
 	 */
-	private String data;
-	
+	//private String data;
+	private String contentType;
+	public String getContentType() {
+		return contentType;
+	}
+
+
+
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
+	}
+
+
+
 	/*
 	 * Indica si la ejecuci�n fue satisfactoria 
 	 */
@@ -44,7 +58,7 @@ public class SSAPBodyReturnMessage {
 	
 	
 	
-	public String getData() {
+	/*public String getData() {
 		return data;
 	}
 
@@ -52,7 +66,7 @@ public class SSAPBodyReturnMessage {
 
 	public void setData(String data) {
 		this.data = data;
-	}
+	}*/
 
 
 
@@ -92,13 +106,12 @@ public class SSAPBodyReturnMessage {
 
 
 
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-
-	public static SSAPBodyReturnMessage fromJsonTo(String json) {
-		return new JSONDeserializer<SSAPBodyReturnMessage>().use( null, SSAPBodyReturnMessage.class).deserialize(json);
+	public static SSAPBodyReturnMessage fromJsonToSSAPBodyReturnMessage(String json) {
+		try {
+			return JSON.deserialize(json, SSAPBodyReturnMessage.class);
+		} catch (IOException e) {
+			throw new SSAPMessageDeserializationError(e);
+		}
 	}
 
 }

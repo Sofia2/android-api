@@ -17,6 +17,8 @@
 package com.indra.sofia2.ssapandroid.ssap;
 
 public enum SSAPMessageTypes {
+	
+	NONE,
 	/*
 	 * Transacciones para logado y logout en SIB
 	 */
@@ -39,7 +41,30 @@ public enum SSAPMessageTypes {
 	 */
 	SUBSCRIBE,
 	UNSUBSCRIBE,
-	INDICATION;
+	INDICATION,
+	BULK,
+	
+	/*
+	 * Despliegue
+	 */
+	CONFIG,
+	
+	/*
+	 * Index
+	 */
+	CREATE,
+	DELETEINDEX,
+	GETINDEXES,
+	
+	/*
+	 * Gestion avanzada de dispositivos
+	 */
+	LOG,
+	ERROR,
+	STATUS,
+	LOCATION,
+	SUBSCRIBECOMMAND,
+	COMMAND;
 	
 	
 	public String value() {

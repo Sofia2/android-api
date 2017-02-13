@@ -16,11 +16,12 @@
 
 package com.indra.sofia2.ssapandroid.ssap.body;
 
+import java.io.IOException;
 import java.util.Map;
 
+import com.indra.sofia2.ssapandroid.json.JSON;
+import com.indra.sofia2.ssapandroid.ssap.exceptions.SSAPMessageDeserializationError;
 import com.indra.sofia2.ssapandroid.ssap.SSAPQueryType;
-
-import flexjson.JSONSerializer;
 
 
 public class SSAPBodySubscribeMessage extends SSAPBodyMessage {
@@ -67,8 +68,6 @@ public class SSAPBodySubscribeMessage extends SSAPBodyMessage {
 		this.queryType = queryType;
 	}
 	
-	
-	
 	public int getMsRefresh() {
 		return msRefresh;
 	}
@@ -85,7 +84,11 @@ public class SSAPBodySubscribeMessage extends SSAPBodyMessage {
 		return queryType;
 	}
 
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+	public static SSAPBodySubscribeMessage fromJsonToSSAPBodySubscribeMessage(String json) {
+		try {
+			return JSON.deserialize(json, SSAPBodySubscribeMessage.class);
+		} catch (IOException e) {
+			throw new SSAPMessageDeserializationError(e);
+		}
 	}
 }

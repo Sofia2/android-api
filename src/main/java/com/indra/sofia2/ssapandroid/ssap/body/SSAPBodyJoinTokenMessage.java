@@ -16,7 +16,10 @@
 
 package com.indra.sofia2.ssapandroid.ssap.body;
 
-import flexjson.JSONSerializer;
+import java.io.IOException;
+
+import com.indra.sofia2.ssapandroid.json.JSON;
+import com.indra.sofia2.ssapandroid.ssap.exceptions.SSAPMessageDeserializationError;
 
 /**
  * Implementacion del mensaje JoinMessage con token
@@ -36,7 +39,11 @@ public class SSAPBodyJoinTokenMessage extends SSAPBodyJoinMessage {
 		this.token = token;
 	}
 
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+	public static SSAPBodyJoinTokenMessage fromJsonToSSAPBodyJoinTokenMessage(String json) {
+		try {
+			return JSON.deserialize(json, SSAPBodyJoinTokenMessage.class);
+		} catch (IOException e) {
+			throw new SSAPMessageDeserializationError(e);
+		}
 	}
 }

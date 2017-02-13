@@ -16,8 +16,10 @@
 
 package com.indra.sofia2.ssapandroid.ssap.body;
 
-import flexjson.JSONDeserializer;
-import flexjson.JSONSerializer;
+import java.io.IOException;
+
+import com.indra.sofia2.ssapandroid.json.JSON;
+import com.indra.sofia2.ssapandroid.ssap.exceptions.SSAPMessageDeserializationError;
 
 
 /**
@@ -63,13 +65,14 @@ public class SSAPBodyJoinUserAndPasswordMessage extends SSAPBodyJoinMessage {
 
 
 
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-
-
-	public static SSAPBodyJoinUserAndPasswordMessage fromJsonTo(String json) {
-		return new JSONDeserializer<SSAPBodyJoinUserAndPasswordMessage>().use( null, SSAPBodyJoinUserAndPasswordMessage.class).deserialize(json);
+	public static SSAPBodyJoinUserAndPasswordMessage fromJsonToSSAPBodyJoinUserAndPasswordMessage(String json) {
+		//ObjectMapper objMapper = new ObjectMapper();
+		//objMapper.enableDefaultTyping();
+		try {
+			return JSON.deserialize(json, SSAPBodyJoinUserAndPasswordMessage.class);
+			//return objMapper.readValue(json, SSAPBodyJoinUserAndPasswordMessage.class);
+		} catch (IOException e) {
+			throw new SSAPMessageDeserializationError(e);
+		}
 	}
 }

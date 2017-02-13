@@ -16,16 +16,20 @@
 
 package com.indra.sofia2.ssapandroid.ssap.body;
 
+import java.io.IOException;
+
+
+import com.indra.sofia2.ssapandroid.ssap.exceptions.SSAPMessageDeserializationError;
+import com.indra.sofia2.ssapandroid.json.JSON;
 import com.indra.sofia2.ssapandroid.ssap.SSAPQueryType;
 
-import flexjson.JSONSerializer;
 
 public class SSAPBodyOperationMessage extends SSAPBodyMessage  {
 	
 	/*
 	 * Mensaje enviado
 	 */
-	private String data;
+//	private String data;
 	
 	/*
 	 * Query enviada
@@ -34,9 +38,9 @@ public class SSAPBodyOperationMessage extends SSAPBodyMessage  {
 	
 	private SSAPQueryType queryType;
 	
-	public void setData(String datos) {
+	/*public void setData(String datos) {
 		this.data = prepareQuotes(datos);
-	}
+	}*/
 	public void setQuery(String query) {
 		this.query = prepareQuotes(query);
 	}
@@ -45,16 +49,31 @@ public class SSAPBodyOperationMessage extends SSAPBodyMessage  {
 	}	
 	
 	
-	public String getData() {
+	/*public String getData() {
 		return data;
-	}
+	}*/
 	public String getQuery() {
 		return query;
 	}
 	public SSAPQueryType getQueryType() {
 		return queryType;
 	}
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+	
+	public static SSAPBodyOperationMessage fromJsonToSSAPBodyOperationMessage(String json) {
+		json = json.replaceAll(SSAPBodyQueryMessage.class.getSimpleName(), SSAPBodyOperationMessage.class.getSimpleName());
+		json = json.replaceAll(SSAPBodyQueryWithParamMessage.class.getSimpleName(), SSAPBodyOperationMessage.class.getSimpleName());
+		try {
+			return JSON.deserialize(json, SSAPBodyOperationMessage.class);
+		} catch (IOException e) {
+			throw new SSAPMessageDeserializationError(e);
+		}
+	}
+	
+	public String toJson(SSAPBodyOperationMessage body) {
+		try {
+			return JSON.serialize(body);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

@@ -16,6 +16,7 @@
 
 package com.indra.sofia2.ssapandroid.ssap;
 
+
 public enum SSAPQueryType {
 	/*
 	 * Tipo de motor de persistencia sobre la que se ralizara la operacion
@@ -24,7 +25,15 @@ public enum SSAPQueryType {
 	SQLLIKE,
 	SIB_DEFINED,  //predefined queries
 	CEP,
-	BDH 
+	BDH,
+	BDC; 
 	
+	public String value() {
+		return name();
+	}
+
+	public static SSAPQueryType fromValue(String v) {
+		return valueOf(v);
+	}
 	
 }

@@ -16,12 +16,13 @@
 
 package com.indra.sofia2.ssapandroid.commadmessages;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import flexjson.JSONDeserializer;
-import flexjson.JSONSerializer;
+import com.indra.sofia2.ssapandroid.json.JSON;
+import com.indra.sofia2.ssapandroid.ssap.exceptions.SSAPMessageDeserializationError;
 
 
 public class CommandMessageResponse {
@@ -55,36 +56,38 @@ public class CommandMessageResponse {
 	}
 
 	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+		String ret = null;
+		try {
+			ret = JSON.serialize(this);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return ret;
 	}
 
-	public String toJson(String[] fields) {
-		return new JSONSerializer().include(fields).exclude("*.class")
-				.serialize(this);
+
+	public static String toJsonArray(Collection<CommandMessageResponse> collection) {
+		try {
+			return JSON.serializeCollection(collection);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
-	public static CommandMessageResponse fromJsonToCommandMessageResponse(
-			String json) {
-		return new JSONDeserializer<CommandMessageResponse>().use(null,
-				CommandMessageResponse.class).deserialize(json);
+	public static CommandMessageResponse fromJsonToCommandMessageResponse(String json) {
+		try {
+			return JSON.deserialize(json, CommandMessageResponse.class);
+		} catch (IOException e) {
+			throw new SSAPMessageDeserializationError(e);
+		}
 	}
 
-	public static String toJsonArray(
-			Collection<CommandMessageResponse> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
-	public static String toJsonArray(
-			Collection<CommandMessageResponse> collection, String[] fields) {
-		return new JSONSerializer().include(fields).exclude("*.class")
-				.serialize(collection);
-	}
-
-	public static Collection<CommandMessageResponse> fromJsonArrayToCommandMessageResponses(
-			String json) {
-		return new JSONDeserializer<List<CommandMessageResponse>>()
-				.use(null, ArrayList.class)
-				.use("values", CommandMessageResponse.class).deserialize(json);
+	public static Collection<CommandMessageResponse> fromJsonArrayToCommandMessageResponses(String json) {
+		try {
+			return JSON.deserializeCollection(json, CommandMessageResponse.class);
+		} catch (IOException e) {
+			throw new SSAPMessageDeserializationError(e);
+		}
 	}
 
 }

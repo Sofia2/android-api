@@ -16,8 +16,12 @@
 
 package com.indra.sofia2.ssapandroid.ssap.body;
 
-import flexjson.JSONSerializer;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Map;
 
+import com.indra.sofia2.ssapandroid.json.JSON;
+import com.indra.sofia2.ssapandroid.ssap.exceptions.SSAPMessageDeserializationError;
 
 /**
  * Implementacion de JoinMessage
@@ -31,6 +35,8 @@ public class SSAPBodyJoinMessage extends SSAPBodyMessage {
 	 * Identificador del dispositivo que se loga
 	 */
 	private String instance;
+	
+	private Map<String, String> args;
 
 	public String getInstance() {
 		return instance;
@@ -39,8 +45,42 @@ public class SSAPBodyJoinMessage extends SSAPBodyMessage {
 	public void setInstance(String instance) {
 		this.instance = instance;
 	}
-
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+	
+	
+	public Map<String, String> getArgs() {
+		return args;
 	}
+	
+    public static SSAPBodyJoinMessage fromJsonToSSAPBodyJoinMessage(String json) {
+    	try {
+			return JSON.deserialize(json, SSAPBodyJoinMessage.class);
+		} catch (IOException e) {
+			throw new SSAPMessageDeserializationError(e);
+		}
+    }
+    
+    public static String toJsonArray(Collection<SSAPBodyJoinMessage> collection) {
+    	try {
+			return JSON.serializeCollection(collection);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+    }
+    
+    public static String toJsonArray(Collection<SSAPBodyJoinMessage> collection, String[] fields) {
+    	try {
+			return JSON.serializeCollection(collection);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+    }
+    
+    public static Collection<SSAPBodyJoinMessage> fromJsonArrayToSSAPBodyJoinMessages(String json) {
+    	try {
+			return JSON.deserializeCollection(json, SSAPBodyJoinMessage.class);
+		} catch (IOException e) {
+			throw new SSAPMessageDeserializationError(e);
+		}
+    }
+
 }
