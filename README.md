@@ -45,6 +45,6 @@ Upon build, place the resulting .jar under the libs directory of your Android pr
 ```
 ## Contact information
 
-If you need support from us, please feel free to contact us at [plataformasofia2@indra.es](mailto:plataformasofia2@indra.es) or at www.sofia2.com.
+If you need support from us, please feel free to contact us at [plataformasofia2@indra.es](mailto:plataformasofia2@indra.es) or at www.sofia2.com. 
 
 And if you want to contribute, send us a pull request.
