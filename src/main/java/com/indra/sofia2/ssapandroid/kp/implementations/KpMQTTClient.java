@@ -215,12 +215,12 @@ public class KpMQTTClient extends KpToExtend {
 					this.subscriptionThread.myStop();
 				}
 
-				// Unsubscribe SIB notifications
-				unSubscribeToNotificationTopics();
-
 				// Disconnect the MQTT client
 				mqttConnection.kill().await();
 				
+				// Unsubscribe SIB notifications
+				unSubscribeToNotificationTopics();
+
 				// Previously, we used a SIB-timeout-based disconnect().
 
 			} catch (Exception e) {
@@ -531,7 +531,8 @@ public class KpMQTTClient extends KpToExtend {
 					e.printStackTrace();
 					log.error("Error receiving message from SIB: "
 							+ e.getMessage());
-					callbacks.poll().handle("");
+					//callbacks.poll().handle("");
+					disconnect();
 				}
 
 			}
