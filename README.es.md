@@ -15,37 +15,23 @@ Unless required by applicable law or agreed to in writing, software distributed 
 Antes de utilizar el API SSAP por primera vez, le recomendamos que se familiarice con los conceptos básicos de la plataforma Sofia2. Están incluidos en la
 documentación de desarrollo de Sofia2, que puede descargarse desde http://sofia2.com/desarrollador.html.
 
-## Instrucciones de compilación
-
-El API Android se distribuye como un proyecto maven. Para generar el artefacto e instalarlo en el repositorio maven local, basta con ejecutar los
-siguientes comandos.
-
+## Descarga
+Hay que añadir estas lineas en el fichero build.gradle de la app
 ```
-cd <raíz de su copia del repositorio>
-mvn clean package [-Dmaven.test.skip]
-mvn install:install-file -DpomFile=pom.xml -Dfile=target/ssap-standalone-<API version>.jar
+repositories {
+    mavenCentral()
+    maven{ url "http://sofia2.org/nexus/content/repositories/releases/"}
+}
+dependencies {
+    compile 'com.indra.sofia2:ssapandroid:0.0.1'
+
+}
 ```
 
-## Dependencias de Android Studio
+## Desarrollo
 
-Tras la generación, hay que colocar el fichero .jar resultante en el directorio libs del proyecto de Android. Además hay que actualizar el fichero build.gradle de la app con las siguientes líneas :
-```
-  repositories {
-      mavenCentral()
-  }
-  dependencies {
-      compile 'org.apache.commons:commons-lang3:3.5'
-      compile 'org.fusesource.hawtbuf:hawtbuf:1.11'
-      compile 'org.fusesource.hawtdispatch:hawtdispatch:1.22'
-      compile 'org.fusesource.hawtdispatch:hawtdispatch-transport:1.22'
-      compile 'org.fusesource.mqtt-client:mqtt-client:1.14'
-      compile 'com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.8.6'
-      compile 'com.fasterxml.jackson.core:jackson-core:2.8.6'
-      compile 'com.fasterxml.jackson.core:jackson-databind:2.8.6'
-      compile 'com.fasterxml.jackson.core:jackson-annotations:2.8.6'
-      compile files('libs/ssap-android-1.1.0.jar')
-  }
-```
+El API de Android se ha migrado para ser desarrollada sobre un proyecto de Android. Para utilizarla en desarrollo hay que añadir este código como un nuevo módulo de librería en Android Studio.
+
 ## Información de contacto
 
 Si necesita recibir soporte, puede contactar con nosotros en www.sofia2.com o enviando un correo electrónico a [plataformasofia2@indra.es](mailto:plataformasofia2@indra.es).
