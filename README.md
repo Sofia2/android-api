@@ -24,7 +24,7 @@ repositories {
     maven{ url "http://sofia2.org/nexus/content/repositories/releases/"}
 }
 dependencies {
-    compile 'com.minsait.sofia2:ssapandroid:0.0.1'
+    compile 'com.indra.sofia2:ssapandroid:0.0.1'
 
 }
 ```
