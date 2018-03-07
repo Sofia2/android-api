@@ -3,8 +3,8 @@ package com.indra.sofia2.ssapandroid.ssap.body;
 import java.io.IOException;
 import java.util.Collection;
 
-import com.indra.sofia2.ssapandroid.json.JSON;
 import com.indra.sofia2.ssapandroid.ssap.SSAPCommandType;
+import com.indra.sofia2.ssapandroid.json.JSON;
 
 public class SSAPBodySubscribeCommandMessage extends SSAPBodyMessage {
 	

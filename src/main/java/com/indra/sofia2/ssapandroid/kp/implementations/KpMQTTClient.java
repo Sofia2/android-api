@@ -36,8 +36,9 @@ import org.fusesource.mqtt.client.Message;
 import org.fusesource.mqtt.client.Topic;
 
 import android.util.Base64;
+import android.util.Log;
 
-import com.indra.sofia2.ssapandroid.commadmessages.CommandMessageResponse;
+import com.indra.sofia2.ssapandroid.commandmessages.CommandMessageResponse;
 import com.indra.sofia2.ssapandroid.kp.Listener4SIBIndicationNotifications;
 import com.indra.sofia2.ssapandroid.kp.config.MQTTConnectionConfig;
 import com.indra.sofia2.ssapandroid.kp.encryption.XXTEA;
@@ -49,7 +50,6 @@ import com.indra.sofia2.ssapandroid.kp.implementations.mqtt.exceptions.MQTTClien
 import com.indra.sofia2.ssapandroid.kp.implementations.utils.IndicationTask;
 import com.indra.sofia2.ssapandroid.ssap.SSAPMessage;
 import com.indra.sofia2.ssapandroid.ssap.SSAPMessageTypes;
-import com.indra.sofia2.ssapandroid.ssap.body.SSAPBodyEmptyMessage;
 import com.indra.sofia2.ssapandroid.ssap.body.SSAPBodyJoinUserAndPasswordMessage;
 import com.indra.sofia2.ssapandroid.ssap.body.SSAPBodyReturnMessage;
 
@@ -112,7 +112,8 @@ public class KpMQTTClient extends KpToExtend {
 	 * @throws ConnectionConfigException
 	 */
 	public KpMQTTClient(MQTTConnectionConfig config) throws ConnectionConfigException{
-		super(config);	
+		super(config);
+		instanceTag = "KpMQTTClient";
 	}
 
 	/**
@@ -224,7 +225,7 @@ public class KpMQTTClient extends KpToExtend {
 				// Previously, we used a SIB-timeout-based disconnect().
 
 			} catch (Exception e) {
-				log.error("Ignoring Error disconnect:"+e.getMessage());
+				Log.e(instanceTag,"Ignoring Error disconnect:"+e.getMessage());
 			} finally {
 				joined = false;
 				this.destroyIndicationPool();
@@ -252,7 +253,7 @@ public class KpMQTTClient extends KpToExtend {
 				subscribeFuture.await(timeout, TimeUnit.MILLISECONDS);
 			}			
 		} catch (Exception e) {
-			log.error("Suscription Error: "+e.getMessage());
+			Log.e(instanceTag,"Suscription Error: "+e.getMessage());
 			throw new ConnectionToSibException(e);
 		}
 
@@ -268,7 +269,7 @@ public class KpMQTTClient extends KpToExtend {
 				subscribeFuture.await(timeout, TimeUnit.MILLISECONDS);
 			}	
 		} catch (Exception e) {
-			log.error("Suscription Error: "+e.getMessage());
+			Log.e(instanceTag,"Suscription Error: "+e.getMessage());
 			throw new ConnectionToSibException(e);
 		}
 		
@@ -302,7 +303,7 @@ public class KpMQTTClient extends KpToExtend {
 			}
 
 		} catch (Exception e) {
-			log.error("UnSuscription Error: "+e.getMessage());
+			Log.e(instanceTag,"UnSuscription Error: "+e.getMessage());
 			throw new DisconnectFromSibException(e);
 		}
 
@@ -319,7 +320,7 @@ public class KpMQTTClient extends KpToExtend {
 			}
 
 		} catch (Exception e) {
-			log.error("Suscription Error: "+e.getMessage());
+			Log.e(instanceTag,"Suscription Error: "+e.getMessage());
 			throw new DisconnectFromSibException(e);
 		}
 
@@ -333,6 +334,8 @@ public class KpMQTTClient extends KpToExtend {
 
 		// Sends the message to Server
 		try {
+			System.out.println(""+msg.toString());
+			System.out.println(""+msg.getBodyAsObject().toString());
 			Callback callback = new Callback();
 			lock.lock();// Blocks until receive the ssap response
 			try {
@@ -352,7 +355,7 @@ public class KpMQTTClient extends KpToExtend {
 			 return responseSsap;		 
 			
 		} catch (Exception e) {
-			log.error("Publication Error: "+e.getMessage());
+			Log.e(instanceTag,"Publication Error: "+e.getMessage());
 			throw new ConnectionToSibException(e);
 		}
 	}
@@ -413,7 +416,7 @@ public class KpMQTTClient extends KpToExtend {
 			return responseSsap;
 
 		} catch (Exception e) {
-			log.error("Publication Error: "+e.getMessage());
+			Log.e(instanceTag,"Publication Error: "+e.getMessage());
 			throw new ConnectionToSibException(e);
 		}
 	}
@@ -529,7 +532,7 @@ public class KpMQTTClient extends KpToExtend {
 
 				} catch (Exception e) {
 					e.printStackTrace();
-					log.error("Error receiving message from SIB: "
+					Log.e(instanceTag,"Error receiving message from SIB: "
 							+ e.getMessage());
 					//callbacks.poll().handle("");
 					disconnect();
@@ -600,7 +603,7 @@ public class KpMQTTClient extends KpToExtend {
             throw new RuntimeException(e);
           }
           if ( response == null ) {
-        	  log.error( "ssap mqtt response timeout for "  + ssapResponseTimeout + "ms"  );
+        	  Log.e("CB-KpMQTTClient", "ssap mqtt response timeout for "  + ssapResponseTimeout + "ms"  );
         	  throw new SSAPResponseTimeoutException( "Timeout: " + ssapResponseTimeout + " waiting for SSAP Response" );
           }
           return response;

@@ -20,8 +20,8 @@ import java.io.IOException;
 import java.util.Map;
 
 import com.indra.sofia2.ssapandroid.json.JSON;
-import com.indra.sofia2.ssapandroid.ssap.exceptions.SSAPMessageDeserializationError;
 import com.indra.sofia2.ssapandroid.ssap.SSAPQueryType;
+import com.indra.sofia2.ssapandroid.ssap.exceptions.SSAPMessageDeserializationError;
 
 
 public class SSAPBodySubscribeMessage extends SSAPBodyMessage {
@@ -39,7 +39,7 @@ public class SSAPBodySubscribeMessage extends SSAPBodyMessage {
 	/*
 	 * Type message
 	 */
-	private SSAPQueryType queryType; 
+	private SSAPQueryType queryType;
 	
 	
 	/*

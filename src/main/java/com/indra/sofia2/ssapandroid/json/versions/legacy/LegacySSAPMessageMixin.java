@@ -1,16 +1,12 @@
 package com.indra.sofia2.ssapandroid.json.versions.legacy;
 
 
-import java.io.IOException;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.indra.sofia2.ssapandroid.json.JSON;
 import com.indra.sofia2.ssapandroid.ssap.SSAPVersion;
-import com.indra.sofia2.ssapandroid.ssap.exceptions.SSAPMessageDeserializationError;
 
 @JsonTypeInfo(use=Id.NONE)
 public abstract class LegacySSAPMessageMixin<T> {

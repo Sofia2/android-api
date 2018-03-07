@@ -20,17 +20,18 @@ import java.util.Map;
 
 import com.indra.sofia2.ssapandroid.kp.exceptions.NotJoinedException;
 import com.indra.sofia2.ssapandroid.kp.exceptions.SQLSentenceNotAllowedForThisOperationException;
-import com.indra.sofia2.ssapandroid.ssap.SSAPMessage;
 import com.indra.sofia2.ssapandroid.ssap.SSAPMessageDirection;
-import com.indra.sofia2.ssapandroid.ssap.SSAPMessageTypes;
 import com.indra.sofia2.ssapandroid.ssap.SSAPQueryType;
+import com.indra.sofia2.ssapandroid.ssap.SSAPVersion;
 import com.indra.sofia2.ssapandroid.ssap.body.SSAPBodyJoinTokenMessage;
 import com.indra.sofia2.ssapandroid.ssap.body.SSAPBodyJoinUserAndPasswordMessage;
 import com.indra.sofia2.ssapandroid.ssap.body.SSAPBodyOperationMessage;
-import com.indra.sofia2.ssapandroid.ssap.body.SSAPBodyQueryMessage;
 import com.indra.sofia2.ssapandroid.ssap.body.SSAPBodyQueryWithParamMessage;
 import com.indra.sofia2.ssapandroid.ssap.body.SSAPBodySubscribeMessage;
 import com.indra.sofia2.ssapandroid.ssap.body.SSAPBodyUnsubscribeMessage;
+import com.indra.sofia2.ssapandroid.ssap.SSAPMessage;
+import com.indra.sofia2.ssapandroid.ssap.SSAPMessageTypes;
+import com.indra.sofia2.ssapandroid.ssap.body.SSAPBodyQueryMessage;
 
 
 public class SSAPMessageGenerator {
@@ -146,7 +147,7 @@ public class SSAPMessageGenerator {
 	 * @return
 	 * @throws NotJoinedException
 	 */
-	public SSAPMessage generateInsertMessage(String sessionKey, String ontologia, String datos, SSAPQueryType queryType) throws SQLSentenceNotAllowedForThisOperationException{
+	public SSAPMessage generateInsertMessage(String sessionKey, String ontologia, String datos, SSAPQueryType queryType) throws SQLSentenceNotAllowedForThisOperationException {
 		SSAPMessage mensaje = new SSAPMessage();
 		mensaje.setSessionKey(sessionKey);
 		SSAPBodyOperationMessage body = new SSAPBodyOperationMessage();
@@ -286,8 +287,8 @@ public class SSAPMessageGenerator {
 	/**
 	 * Genera un mensaje QUERY de tipo nativo
 	 * @param sessionKey
-	 * @param idQuery
-	 * @param queryType
+	 * @param
+	 * @param
 	 * @return
 	 * @throws NotJoinedException
 	 */
@@ -390,8 +391,8 @@ public class SSAPMessageGenerator {
 	/**
 	 * Genera un mensaje SUBSCRIBE del tipo nativo
 	 * @param sessionKey
-	 * @param idQuery
-	 * @param queryType
+	 * @param query
+	 * @param
 	 * @return
 	 * @throws NotJoinedException
 	 */
@@ -400,11 +401,13 @@ public class SSAPMessageGenerator {
 		mensaje.setSessionKey(sessionKey);
 		SSAPBodySubscribeMessage body = new SSAPBodySubscribeMessage();
 		body.setQuery(query);
+		body.setQueryType(SSAPQueryType.NATIVE);
 		body.setMsRefresh(msRefresh);
 		mensaje.setBody(body.toJson());
 		mensaje.setDirection(SSAPMessageDirection.REQUEST);
 		mensaje.setMessageType(SSAPMessageTypes.SUBSCRIBE);
 		mensaje.setOntology(ontologia);
+		mensaje.setVersion(SSAPVersion.LEGACY);
 		return mensaje;
 	}
 

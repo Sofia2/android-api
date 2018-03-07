@@ -16,9 +16,9 @@
 
 package com.indra.sofia2.ssapandroid.kp.implementations.utils;
 
-import com.indra.sofia2.ssapandroid.commadmessages.CommandMessageRequest;
-import com.indra.sofia2.ssapandroid.kp.Listener4SIBCommandMessageNotifications;
+import com.indra.sofia2.ssapandroid.commandmessages.CommandMessageRequest;
 import com.indra.sofia2.ssapandroid.kp.Listener4SIBIndicationNotifications;
+import com.indra.sofia2.ssapandroid.kp.Listener4SIBCommandMessageNotifications;
 import com.indra.sofia2.ssapandroid.ssap.SSAPMessage;
 
 public class IndicationTask implements Runnable {

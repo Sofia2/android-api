@@ -23,7 +23,6 @@ import com.indra.sofia2.ssapandroid.json.JSON;
 import com.indra.sofia2.ssapandroid.ssap.exceptions.SSAPMessageDeserializationError;
 
 
-
 public class SSAPBodyQueryWithParamMessage extends SSAPBodyOperationMessage {
 
 	

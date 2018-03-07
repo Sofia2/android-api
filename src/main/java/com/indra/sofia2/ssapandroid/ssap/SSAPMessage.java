@@ -29,7 +29,6 @@ import com.indra.sofia2.ssapandroid.json.JSON;
 import com.indra.sofia2.ssapandroid.json.SSAPMessageDeserializer;
 import com.indra.sofia2.ssapandroid.ssap.body.SSAPBodyEmptyMessage;
 import com.indra.sofia2.ssapandroid.ssap.body.SSAPBodyMessage;
-import com.indra.sofia2.ssapandroid.ssap.body.binary.SSAPBinaryMessage;
 import com.indra.sofia2.ssapandroid.ssap.exceptions.SSAPMessageDeserializationError;
 
 

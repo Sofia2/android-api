@@ -19,8 +19,8 @@ package com.indra.sofia2.ssapandroid.ssap.body;
 import java.io.IOException;
 
 import com.indra.sofia2.ssapandroid.json.JSON;
-import com.indra.sofia2.ssapandroid.ssap.exceptions.SSAPMessageDeserializationError;
 import com.indra.sofia2.ssapandroid.ssap.SSAPErrorCode;
+import com.indra.sofia2.ssapandroid.ssap.exceptions.SSAPMessageDeserializationError;
 
 
 public class SSAPBodyReturnMessage extends SSAPBodyMessage{

@@ -29,6 +29,6 @@ public interface Listener4SIBIndicationNotifications {
 	 * Metodo que el API del kp-core invocará en el listener
 	 * @param message
 	 */
-	void onIndication(String idNotifition,SSAPMessage message);
+	void onIndication(String idNotifition, SSAPMessage message);
 
 }

@@ -27,7 +27,6 @@ import com.indra.sofia2.ssapandroid.json.JSON;
 import com.indra.sofia2.ssapandroid.ssap.SSAPVersion;
 
 
-
 @JsonTypeInfo(use=Id.NAME)
 @JsonSubTypes({
 	@JsonSubTypes.Type(value=SSAPBodyCommandMessage.class),

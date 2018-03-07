@@ -17,8 +17,8 @@
 package com.indra.sofia2.ssapandroid.kp;
 
 import com.indra.sofia2.ssapandroid.kp.exceptions.ConnectionToSibException;
-import com.indra.sofia2.ssapandroid.ssap.SSAPMessage;
 import com.indra.sofia2.ssapandroid.ssap.body.SSAPBodyJoinMessage;
+import com.indra.sofia2.ssapandroid.ssap.SSAPMessage;
 
 
 /**

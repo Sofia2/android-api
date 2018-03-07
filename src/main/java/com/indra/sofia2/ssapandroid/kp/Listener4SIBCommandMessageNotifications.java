@@ -16,7 +16,7 @@
 
 package com.indra.sofia2.ssapandroid.kp;
 
-import com.indra.sofia2.ssapandroid.commadmessages.CommandMessageRequest;
+import com.indra.sofia2.ssapandroid.commandmessages.CommandMessageRequest;
 
 /**
  * Interface to receice SIB notifications to Raw messages that are not SSAP compliant
@@ -27,7 +27,7 @@ public interface Listener4SIBCommandMessageNotifications {
 	
 	/**
 	 * API method to be invocated when the KP receive a raw message from SIB
-	 * @param rawMessage
+	 *
 	 */
 	void onCommandMessage(CommandMessageRequest commandMessage);
 

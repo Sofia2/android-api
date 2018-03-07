@@ -157,7 +157,7 @@ public class MQTTConnectionConfig extends ConnectionConfig {
 		return trafficClass;
 	}
 
-	public void validateConfig() throws ConnectionConfigException{
+	public void validateConfig() throws ConnectionConfigException {
 		super.validateConfig();
 		if (qualityOfService == null) {
 			throw new ConnectionConfigException("Quality Of Service not established"); 

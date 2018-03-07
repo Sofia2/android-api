@@ -6,21 +6,17 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import com.indra.sofia2.ssapandroid.kp.implementations.utils.IndicationTask;
 import com.indra.sofia2.ssapandroid.kp.Kp;
 import com.indra.sofia2.ssapandroid.kp.Listener4SIBCommandMessageNotifications;
 import com.indra.sofia2.ssapandroid.kp.Listener4SIBIndicationNotifications;
 import com.indra.sofia2.ssapandroid.kp.config.ConnectionConfig;
 import com.indra.sofia2.ssapandroid.kp.exceptions.ConnectionConfigException;
 import com.indra.sofia2.ssapandroid.kp.implementations.tcpip.connector.IConnectorMessageListener;
+import com.indra.sofia2.ssapandroid.kp.implementations.utils.IndicationTask;
 
 public abstract class KpToExtend implements Kp, IConnectorMessageListener {
-	
-	protected static Log log = LogFactory.getLog(KpToExtend.class);
-	
+
+	protected String instanceTag;
 	/**
 	 * Session key del kp en la conexión con el SIB
 	 */
@@ -96,7 +92,7 @@ public abstract class KpToExtend implements Kp, IConnectorMessageListener {
 	}
 	
 	
-	public KpToExtend(ConnectionConfig config) throws ConnectionConfigException{
+	public KpToExtend(ConnectionConfig config) throws ConnectionConfigException {
 		this.config=config;
 		if (config == null) {
 			throw new ConnectionConfigException("Configuration is null");
